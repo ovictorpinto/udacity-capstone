@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">BTFit</string>
+    <string name="action_settings">Settings</string>
+    <string name="dieta">Dieta</string>
+    <string name="atv_fis">Atv Fís</string>
+    <string name="title_activity_edit">EditActivity</string>
+    <string name="nivel_de_dieta">Nível de dieta</string>
+    <string name="nivel_de_atv_fisica">Nível de atividade física</string>
+    <string name="observacao">Observação</string>
+    <string name="dia">Dia</string>
+    <string name="salvar">Salvar</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="dia_otimo">#66FF33</color>
+    <color name="dia_medio">#FFFF33</color>
+    <color name="dia_ruim">#FF3D3D</color>
+    <color name="dia_default">#CCC</color>
+</resources>
