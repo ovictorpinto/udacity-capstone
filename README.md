@@ -1,5 +1,5 @@
 # udacity-capstone
-Último projeto do Curso Udacity Nanodegree Android Developer 
+Último projeto do Curso Udacity Nanodegree Android Developer  (https://br.udacity.com/course/android-developer-nanodegree--nd801/)
 
 O projeto será o aplicativo BTFit.
 
