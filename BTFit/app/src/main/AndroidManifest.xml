@@ -24,6 +24,12 @@
             android:label="@string/title_activity_edit"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <provider
+            android:name=".model.DiaProvider"
+            android:authorities="br.com.r29tecnologia.btpress.btfit"
+            android:exported="true"/>
+
     </application>
 
 </manifest>
