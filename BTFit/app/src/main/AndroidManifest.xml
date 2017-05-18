@@ -22,6 +22,7 @@
         <activity
             android:name=".EditActivity"
             android:label="@string/title_activity_edit"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 

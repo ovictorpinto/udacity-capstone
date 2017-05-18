@@ -15,6 +15,7 @@ import java.util.Calendar;
 
 import br.com.r29tecnologia.btpress.btfit.model.Contratos;
 import br.com.r29tecnologia.btpress.btfit.model.Dia;
+import br.com.r29tecnologia.btpress.btfit.util.DateUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,9 +43,15 @@ public class EditActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        calendar = Calendar.getInstance();
+        calendar = DateUtil.getToday();
+        if (getIntent().hasExtra(Dia.PARAM)) {
+            Dia dia = getIntent().getParcelableExtra(Dia.PARAM);
+            calendar.setTime(dia.getDate());
+            ratingDieta.setRating(dia.getFlagDieta());
+            ratingAtv.setRating(dia.getFlagAtvFisica());
+            campoObservacao.setText(dia.getObservacao());
+        }
         fillDate();
-        
     }
     
     @OnClick(R.id.edittextDia)

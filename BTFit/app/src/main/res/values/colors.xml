@@ -8,4 +8,6 @@
     <color name="dia_medio">#FFFF33</color>
     <color name="dia_ruim">#FF3D3D</color>
     <color name="dia_default">#CCC</color>
+
+    <color name="dia_hoje">#00F</color>
 </resources>
