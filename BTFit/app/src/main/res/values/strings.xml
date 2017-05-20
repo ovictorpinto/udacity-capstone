@@ -9,4 +9,9 @@
     <string name="observacao">Observação</string>
     <string name="dia">Dia</string>
     <string name="salvar">Salvar</string>
+    <string name="action_periodo">Período</string>
+    <string name="mes">Mensal</string>
+    <string name="titulo_dialogo_mes">Selecione o mês</string>
+    <string name="compartilhar">Compartilhar</string>
+    <string name="gerando_relatorio_">Gerando relatório…</string>
 </resources>

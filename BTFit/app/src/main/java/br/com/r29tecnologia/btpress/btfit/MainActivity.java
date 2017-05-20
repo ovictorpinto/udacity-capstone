@@ -13,9 +13,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         List<Dia> list = Contratos.DIAS.getListFrom(data);
-        final DiaAdapter adapter = new DiaAdapter(fill(list));
+        final DiaAdapter adapter = new DiaAdapter(DateUtil.fill(list, dtIni, dtFim));
         adapter.setListener(new DiaAdapter.DiaListener() {
             @Override
             public void onDiaClick(Dia dia) {
@@ -95,28 +96,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerView.setAdapter(adapter);
     }
     
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_mensal, menu);
+        return true;
+    }
+    
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_mensal) {
+            Intent intent = new Intent(this, MesActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         Log.d(TAG, "Resetando…");
-    }
-    
-    private List<Dia> fill(List<Dia> exists) {
-        List<Dia> total = new ArrayList<>();
-        
-        Calendar ini = Calendar.getInstance();
-        ini.setTime(dtIni);
-        int i = 0;
-        while (!ini.getTime().after(dtFim)) {
-            if (exists.size() > i && ini.getTime().equals(exists.get(i).getDate())) {
-                total.add(exists.get(i));
-                i++;
-            } else {
-                final Dia dia = new Dia();
-                dia.setDate(ini.getTime());
-                total.add(dia);//preenche com dia default
-            }
-            ini.add(Calendar.DAY_OF_MONTH, 1);
-        }
-        return total;
     }
 }

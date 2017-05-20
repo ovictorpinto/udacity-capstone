@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="br.com.r29tecnologia.btpress.btfit.MainActivity">
+
+    <item android:id="@+id/action_periodo"
+          android:icon="@drawable/ic_event_black_24dp"
+          android:orderInCategory="1"
+          android:title="@string/action_periodo"
+          app:showAsAction="always"/>
+</menu>
