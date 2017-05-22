@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.util.Calendar;
@@ -22,6 +23,8 @@ import br.com.r29tecnologia.btpress.btfit.util.DateUtil;
  * Implementation of App Widget functionality.
  */
 public class BTFitAppWidget extends AppWidgetProvider {
+    
+    private static final String TAG = BTFitAppWidget.class.getSimpleName();
     
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         
@@ -61,13 +64,9 @@ public class BTFitAppWidget extends AppWidgetProvider {
                 .setImageViewResource(R.id.image_atv_3, dia.getFlagAtvFisica() > 2 ? R.drawable.ic_star_filled : R.drawable.ic_star_border);
     }
     
-    
     @Override
-    public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
-        }
+    public void onEnabled(final Context context) {
+        super.onEnabled(context);
         final ContentObserver observer = new ContentObserver(new Handler()) {
             @Override
             public void onChange(boolean selfChange) {
@@ -77,6 +76,15 @@ public class BTFitAppWidget extends AppWidgetProvider {
             }
         };
         context.getContentResolver().registerContentObserver(Contratos.DIAS.URI, true, observer);
+    }
+    
+    @Override
+    public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
+        Log.d(TAG, "Atualiando widget…");
+        // There may be multiple widgets active, so update all of them
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId);
+        }
     }
 }
 
