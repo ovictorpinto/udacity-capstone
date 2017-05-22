@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "731704067398",
+    "firebase_url": "https://btfit-62ea6.firebaseio.com",
+    "project_id": "btfit-62ea6",
+    "storage_bucket": "btfit-62ea6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731704067398:android:9ec549efe3f7b9ce",
+        "android_client_info": {
+          "package_name": "br.com.r29tecnologia.btpress.btfit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731704067398-8iecn58uuuj88lf3ii52r6iesd5thb80.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.r29tecnologia.btpress.btfit",
+            "certificate_hash": "6c9bbc740f31df85ffd4989438607fd023600860"
+          }
+        },
+        {
+          "client_id": "731704067398-94n46fo2vcrk89l50h3bi95ocvje323l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxTHk9o-ek3qXPflYXafFtLTa-8wt-hcA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731704067398-94n46fo2vcrk89l50h3bi95ocvje323l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

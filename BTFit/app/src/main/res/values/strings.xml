@@ -14,4 +14,10 @@
     <string name="titulo_dialogo_mes">Selecione o mês</string>
     <string name="compartilhar">Compartilhar</string>
     <string name="gerando_relatorio_">Gerando relatório…</string>
+    <string name="relatorio">Relatório</string>
+
+    <string name="mes_vazio">Você não preencheu nenhum dia no mês.</string>
+    <string name="share_dia">%1$s:\nNível dieta: %2$d\nNível ativ. física: %3$d\nObservação: %4$s</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

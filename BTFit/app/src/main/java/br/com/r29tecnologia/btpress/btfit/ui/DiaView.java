@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class DiaView {
     
     private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM", Locale.getDefault());
-    private final static SimpleDateFormat WEEK_FORMAT = new SimpleDateFormat("EEE", Locale.getDefault());
+    public final static SimpleDateFormat WEEK_FORMAT = new SimpleDateFormat("EEE", Locale.getDefault());
     private final View mainView;
     private Context context;
     private Dia dia;

@@ -3,6 +3,7 @@ package br.com.r29tecnologia.btpress.btfit;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.os.AsyncTaskCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -99,7 +102,7 @@ public class MesActivity extends AppCompatActivity implements LoaderManager.Load
                     mesReferencia.set(Calendar.MONTH, month);
                     mesReferencia.set(Calendar.YEAR, year);
                     setPeriodo();
-                    getSupportLoaderManager().initLoader(DIA_LOADER, null, MesActivity.this);
+                    getSupportLoaderManager().restartLoader(DIA_LOADER, null, MesActivity.this);
                 }
             }, mesReferencia.get(Calendar.YEAR), mesReferencia.get(Calendar.MONTH));
             dialog.show();
@@ -112,44 +115,61 @@ public class MesActivity extends AppCompatActivity implements LoaderManager.Load
     }
     
     private void compartilhar() {
-        acaoCompartilhar = new AsyncTask<String, String, Boolean>() {
-            
-            private ProgressDialog waiting;
-            
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                waiting = ProgressDialog.show(MesActivity.this, "", getString(R.string.gerando_relatorio_), true, true);
-                waiting.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        cancel(true);
-                    }
-                });
-                waiting.show();
-            }
-            
-            @Override
-            protected Boolean doInBackground(String... params) {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        if (diaList == null || diaList.isEmpty()) {
+            new AlertDialog.Builder(this).setTitle(R.string.relatorio).setMessage(R.string.mes_vazio)
+                                         .setPositiveButton(android.R.string.ok, null).create().show();
+        } else {
+            acaoCompartilhar = new AsyncTask<String, String, Boolean>() {
+                
+                private ProgressDialog waiting;
+                
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    waiting = ProgressDialog.show(MesActivity.this, "", getString(R.string.gerando_relatorio_), true, true);
+                    waiting.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            cancel(true);
+                        }
+                    });
+                    waiting.show();
                 }
-                return true;
-            }
-            
-            @Override
-            protected void onPostExecute(Boolean sucesso) {
-                super.onPostExecute(sucesso);
-                if (!isCancelled()) {
-                    if (waiting.isShowing()) {
-                        waiting.dismiss();
+                
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    try {
+                        Thread.sleep(1500);
+                        StringBuilder builder = new StringBuilder();
+                        DateFormat dataFormat = DateFormat.getDateInstance();
+                        for (Dia dia : diaList) {
+                            builder.append(getString(R.string.share_dia, dataFormat.format(dia.getDate()), dia.getFlagDieta(), dia
+                                    .getFlagAtvFisica(), dia.getObservacao())).append("\n\n");
+                        }
+                        String texto = builder.toString();
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, texto);
+                        shareIntent.setType("text/plain");
+                        startActivity(shareIntent);
+                        
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+                
+                @Override
+                protected void onPostExecute(Boolean sucesso) {
+                    super.onPostExecute(sucesso);
+                    if (!isCancelled()) {
+                        if (waiting.isShowing()) {
+                            waiting.dismiss();
+                        }
                     }
                 }
-            }
-        };
-        AsyncTaskCompat.executeParallel(acaoCompartilhar);
+            };
+            AsyncTaskCompat.executeParallel(acaoCompartilhar);
+        }
     }
     
     @Override
