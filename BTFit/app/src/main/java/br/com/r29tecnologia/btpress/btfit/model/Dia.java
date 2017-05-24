@@ -23,6 +23,7 @@ public class Dia implements Parcelable {
     private int flagDieta;
     private int flagAtvFisica;
     private String observacao;
+    private Float peso;
     
     public Dia() {
         
@@ -34,6 +35,7 @@ public class Dia implements Parcelable {
         flagAtvFisica = in.readInt();
         observacao = in.readString();
         date = (Date) in.readSerializable();
+        peso = (Float) in.readSerializable();
     }
     
     @Override
@@ -43,6 +45,7 @@ public class Dia implements Parcelable {
         dest.writeInt(flagAtvFisica);
         dest.writeString(observacao);
         dest.writeSerializable(date);
+        dest.writeSerializable(peso);
     }
     
     @Override
@@ -112,6 +115,14 @@ public class Dia implements Parcelable {
     
     public String getObservacao() {
         return observacao;
+    }
+    
+    public Float getPeso() {
+        return peso;
+    }
+    
+    public void setPeso(Float peso) {
+        this.peso = peso;
     }
     
     public void setObservacao(String observacao) {

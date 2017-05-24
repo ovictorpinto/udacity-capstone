@@ -1,4 +1,4 @@
-package br.com.r29tecnologia.btpress.btfit;
+package br.com.r29tecnologia.btpress.btfit.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import br.com.r29tecnologia.btpress.btfit.R;
 import br.com.r29tecnologia.btpress.btfit.model.Contratos;
 import br.com.r29tecnologia.btpress.btfit.model.Dia;
 import br.com.r29tecnologia.btpress.btfit.ui.DiaView;

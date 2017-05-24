@@ -20,4 +20,6 @@
     <string name="share_dia">%1$s:\nNível dieta: %2$d\nNível ativ. física: %3$d\nObservação: %4$s</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="texto_lembrete">Que tal registrar como foi o seu dia hoje?</string>
+    <string name="peso">Peso</string>
 </resources>

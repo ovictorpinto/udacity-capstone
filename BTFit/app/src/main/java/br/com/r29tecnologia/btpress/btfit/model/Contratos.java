@@ -23,7 +23,7 @@ public final class Contratos {
     
     static final String AUTHORITY = "br.com.r29tecnologia.btpress.btfit";
     static final String PATH_DIA = "dia";
-    static final String PATH_DIA_ESPECIFICO = "dia/*";
+    static final String PATH_DIA_ESPECIFICO = "dia/#";
     private static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
     
     public static final class DIAS implements BaseColumns {
@@ -35,6 +35,7 @@ public final class Contratos {
         public static final String COLUMN_ATV_FISICA = "atv_fisica";
         public static final String COLUMN_OBSERVACAO = "observacao";
         public static final String COLUMN_PREENCHIDO = "preenchido";
+        public static final String COLUMN_PESO = "peso";
         
         public static final int POSITION_ID = 0;
         public static final int POSITION_DIA = 1;
@@ -42,14 +43,25 @@ public final class Contratos {
         public static final int POSITION_ATV_FISICA = 3;
         public static final int POSITION_OBSERVACAO = 4;
         public static final int POSITION_PREENCHIDO = 5;
+        public static final int POSITION_PESO = 6;
         
         public static final ImmutableList<String> COLUMNS = ImmutableList
-                .of(_ID, COLUMN_DIA, COLUMN_DIETA, COLUMN_ATV_FISICA, COLUMN_OBSERVACAO, COLUMN_PREENCHIDO);
+                .of(_ID, COLUMN_DIA, COLUMN_DIETA, COLUMN_ATV_FISICA, COLUMN_OBSERVACAO, COLUMN_PREENCHIDO, COLUMN_PESO);
         
-        public static String CREATE = String
-                .format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s INTEGER NOT NULL, %s INTEGER NOT NULL, %s INTEGER NOT " +
-                        "" + "" + "" + "" + "" + "" + "" + "NULL, %s TEXT NULL, %s INTEGER NOT NULL, UNIQUE (%s) ON CONFLICT REPLACE);",
-                        TABLE_NAME, _ID, COLUMN_DIA, COLUMN_DIETA, COLUMN_ATV_FISICA, COLUMN_OBSERVACAO, COLUMN_PREENCHIDO, COLUMN_DIA);
+        public static String CREATE;
+        
+        static {
+            StringBuilder tmp = new StringBuilder("CREATE TABLE ");
+            tmp.append(TABLE_NAME).append("( ").append(_ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ");
+            tmp.append(COLUMN_DIA).append(" INTEGER NOT NULL, ");
+            tmp.append(COLUMN_DIETA).append(" INTEGER NOT NULL, ");
+            tmp.append(COLUMN_ATV_FISICA).append(" INTEGER NOT NULL, ");
+            tmp.append(COLUMN_OBSERVACAO).append(" TEXT NULL, ");
+            tmp.append(COLUMN_PREENCHIDO).append(" INTEGER NOT NULL, ");
+            tmp.append(COLUMN_PESO).append(" REAL NULL, ");
+            tmp.append("UNIQUE (").append(COLUMN_DIA).append(") ON ").append("CONFLICT ").append("REPLACE);");
+            CREATE = tmp.toString();
+        }
         
         public static String getDiaEspecificoFromUri(Uri queryUri) {
             return queryUri.getLastPathSegment();
@@ -62,6 +74,7 @@ public final class Contratos {
             cv.put(COLUMN_ATV_FISICA, dia.getFlagAtvFisica());
             cv.put(COLUMN_OBSERVACAO, dia.getObservacao());
             cv.put(COLUMN_PREENCHIDO, dia.isPreenchido() ? 1 : 0);
+            cv.put(COLUMN_PESO, dia.getPeso());
             return cv;
         }
         
@@ -76,6 +89,7 @@ public final class Contratos {
                     dia.setFlagAtvFisica(data.getInt(POSITION_ATV_FISICA));
                     dia.setObservacao(data.getString(POSITION_OBSERVACAO));
                     dia.setPreenchido(data.getInt(POSITION_PREENCHIDO) > 0);
+                    dia.setPeso(data.getFloat(POSITION_PESO));
                     list.add(dia);
                 }
             }
@@ -87,5 +101,8 @@ public final class Contratos {
                            .appendQueryParameter("dtFim", String.valueOf(dtFim.getTime())).build();
         }
         
+        public static Uri buildUriDiaEspecifico(Date dia) {
+            return URI.buildUpon().appendPath(String.valueOf(dia.getTime())).build();
+        }
     }
 }

@@ -36,6 +36,9 @@ public class EditActivity extends AppCompatActivity {
     @BindView(R.id.edittextObservacao)
     EditText campoObservacao;
     
+    @BindView(R.id.edittextPeso)
+    EditText campoPeso;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +53,9 @@ public class EditActivity extends AppCompatActivity {
             ratingDieta.setRating(dia.getFlagDieta());
             ratingAtv.setRating(dia.getFlagAtvFisica());
             campoObservacao.setText(dia.getObservacao());
+            if (dia.getPeso() != null) {
+                campoPeso.setText(dia.getPeso().toString());
+            }
         }
         fillDate();
     }
@@ -87,6 +93,10 @@ public class EditActivity extends AppCompatActivity {
             dia.setFlagAtvFisica((int) ratingAtv.getRating());
             dia.setPreenchido(true);
             dia.setObservacao(campoObservacao.getText().toString());
+            String peso = campoPeso.getText().toString();
+            if (peso.length() > 0) {
+                dia.setPeso(Float.parseFloat(peso));
+            }
             getContentResolver().insert(Contratos.DIAS.URI, Contratos.DIAS.getCVFrom(dia));
             finish();
             return true;

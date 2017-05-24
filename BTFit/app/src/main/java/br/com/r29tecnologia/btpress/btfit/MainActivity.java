@@ -17,6 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     
     @BindView(R.id.fab)
     FloatingActionButton buttonAdicionar;
+    
+    @BindView(R.id.chart)
+    LineChart chart;
+    
     private Date dtFim;
     private Date dtIni;
     
@@ -83,8 +93,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        List<Dia> list = Contratos.DIAS.getListFrom(data);
-        final DiaAdapter adapter = new DiaAdapter(DateUtil.fill(list, dtIni, dtFim));
+        List<Dia> preenchidos = Contratos.DIAS.getListFrom(data);
+        List<Dia> list = DateUtil.fill(preenchidos, dtIni, dtFim);
+        final DiaAdapter adapter = new DiaAdapter(list);
         adapter.setListener(new DiaAdapter.DiaListener() {
             @Override
             public void onDiaClick(Dia dia) {
@@ -94,6 +105,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
         recyclerView.setAdapter(adapter);
+        
+        List<Entry> entries = new ArrayList<Entry>();
+        for (Dia dia : preenchidos) {
+            // turn your data into Entry objects
+            entries.add(new Entry(dia.getDate().getDate(), dia.getPeso()));
+        }
+        LineDataSet dataSet = new LineDataSet(entries, "Peso"); // add entries to dataset
+        LineData lineData = new LineData(dataSet);
+        chart.setData(lineData);
+        chart.invalidate(); // refresh
     }
     
     public boolean onCreateOptionsMenu(Menu menu) {
