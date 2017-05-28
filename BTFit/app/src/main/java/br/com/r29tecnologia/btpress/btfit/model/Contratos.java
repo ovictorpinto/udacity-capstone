@@ -89,7 +89,9 @@ public final class Contratos {
                     dia.setFlagAtvFisica(data.getInt(POSITION_ATV_FISICA));
                     dia.setObservacao(data.getString(POSITION_OBSERVACAO));
                     dia.setPreenchido(data.getInt(POSITION_PREENCHIDO) > 0);
-                    dia.setPeso(data.getFloat(POSITION_PESO));
+                    if (!data.isNull(POSITION_PESO)) {
+                        dia.setPeso(data.getFloat(POSITION_PESO));
+                    }
                     list.add(dia);
                 }
             }

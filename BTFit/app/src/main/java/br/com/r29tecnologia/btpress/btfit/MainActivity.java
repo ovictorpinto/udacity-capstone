@@ -16,11 +16,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     
     @BindView(R.id.chart)
     LineChart chart;
+    
+    @BindView(R.id.textview_empty_chart)
+    TextView emptyChart;
     
     private Date dtFim;
     private Date dtIni;
@@ -106,15 +112,36 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
         recyclerView.setAdapter(adapter);
         
-        List<Entry> entries = new ArrayList<Entry>();
+        fillGrafico(preenchidos);
+    }
+    
+    private void fillGrafico(List<Dia> preenchidos) {
+        
+        List<Entry> entries = new ArrayList<>();
         for (Dia dia : preenchidos) {
-            // turn your data into Entry objects
-            entries.add(new Entry(dia.getDate().getDate(), dia.getPeso()));
+            if (dia.getPeso() != null) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(dia.getDate());
+                entries.add(new Entry(calendar.get(Calendar.DAY_OF_MONTH), dia.getPeso()));
+            }
         }
-        LineDataSet dataSet = new LineDataSet(entries, "Peso"); // add entries to dataset
-        LineData lineData = new LineData(dataSet);
-        chart.setData(lineData);
-        chart.invalidate(); // refresh
+        if (!entries.isEmpty()) {
+            LineDataSet dataSet = new LineDataSet(entries, getString(R.string.peso)); // add entries to dataset
+            LineData lineData = new LineData(dataSet);
+            chart.setData(lineData);
+            chart.invalidate(); // refresh
+            chart.getXAxis().setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    return String.valueOf((int) value);
+                }
+            });
+            emptyChart.setVisibility(View.GONE);
+            chart.setVisibility(View.VISIBLE);
+        } else {
+            emptyChart.setVisibility(View.VISIBLE);
+            chart.setVisibility(View.GONE);
+        }
     }
     
     public boolean onCreateOptionsMenu(Menu menu) {

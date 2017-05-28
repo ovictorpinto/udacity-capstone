@@ -11,6 +11,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RatingBar;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.Calendar;
 
 import br.com.r29tecnologia.btpress.btfit.model.Contratos;
@@ -21,6 +23,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class EditActivity extends AppCompatActivity {
+    
+    private FirebaseAnalytics mFirebaseAnalytics;
     
     Calendar calendar;
     
@@ -58,6 +62,9 @@ public class EditActivity extends AppCompatActivity {
             }
         }
         fillDate();
+        
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
     
     @OnClick(R.id.edittextDia)
@@ -99,6 +106,12 @@ public class EditActivity extends AppCompatActivity {
             }
             getContentResolver().insert(Contratos.DIAS.URI, Contratos.DIAS.getCVFrom(dia));
             finish();
+            
+            Bundle bundle = new Bundle();
+            bundle.putInt("dieta", dia.getFlagDieta());
+            bundle.putInt("atividade_fisica", dia.getFlagDieta());
+            bundle.putString("dia", DateFormat.format("dd/MM/yyyy", dia.getDate()).toString());
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
             return true;
         }
         return super.onOptionsItemSelected(item);

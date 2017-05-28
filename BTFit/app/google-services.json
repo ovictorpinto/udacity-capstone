@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "731704067398-50lpsnekncl4bgr442fgv7cap3q5gsk8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.r29tecnologia.btpress.btfit",
+            "certificate_hash": "f7d25fdbbd8ab8be20155c4ea55571ca8e803626"
+          }
+        },
+        {
           "client_id": "731704067398-8iecn58uuuj88lf3ii52r6iesd5thb80.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

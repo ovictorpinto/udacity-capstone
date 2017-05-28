@@ -24,10 +24,22 @@
             android:padding="16dp">
         </android.support.v7.widget.RecyclerView>
     </android.support.v7.widget.CardView>
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="80dp"
-        android:layout_marginTop="@dimen/padding_default"/>
+        android:layout_marginTop="@dimen/padding_default">
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="100dp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+        <TextView
+            android:id="@+id/textview_empty_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/empty_chart"/>
+    </FrameLayout>
 </LinearLayout>
