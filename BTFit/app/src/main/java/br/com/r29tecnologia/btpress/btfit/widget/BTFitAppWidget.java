@@ -1,9 +1,11 @@
 package br.com.r29tecnologia.btpress.btfit.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Handler;
@@ -14,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import br.com.r29tecnologia.btpress.btfit.MainActivity;
 import br.com.r29tecnologia.btpress.btfit.R;
 import br.com.r29tecnologia.btpress.btfit.model.Contratos;
 import br.com.r29tecnologia.btpress.btfit.model.Dia;
@@ -27,7 +30,7 @@ public class BTFitAppWidget extends AppWidgetProvider {
     
     private static final String TAG = BTFitAppWidget.class.getSimpleName();
     
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         
         Calendar calendar = DateUtil.getToday();
         Date dtFim = calendar.getTime();
@@ -47,12 +50,16 @@ public class BTFitAppWidget extends AppWidgetProvider {
             fillRemote(context, remoteViews, filled.get(pos));
             mainView.addView(R.id.content, remoteViews);
         }
+    
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        mainView.setOnClickPendingIntent(R.id.content, pendingIntent);
         
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, mainView);
     }
     
-    static void fillRemote(Context context, RemoteViews remoteViews, Dia dia) {
+    private static void fillRemote(Context context, RemoteViews remoteViews, Dia dia) {
         remoteViews.setTextViewText(R.id.textview_week, DiaView.WEEK_FORMAT.format(dia.getDate()));
         remoteViews.setInt(R.id.mainview, "setBackgroundColor", dia.getDayColor(context));
         remoteViews

@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Date;
 import java.util.List;
 
 import br.com.r29tecnologia.btpress.btfit.model.Dia;
@@ -45,7 +46,9 @@ public class DiaAdapter extends RecyclerView.Adapter<DiaAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Dia item = list.get(position);
         holder.diaView.setDia(item);
-        if (listener != null) {
+        
+        boolean dataAntesHoje = item.getDate().compareTo(new Date()) <= 0;
+        if (dataAntesHoje && listener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -53,6 +56,7 @@ public class DiaAdapter extends RecyclerView.Adapter<DiaAdapter.ViewHolder> {
                 }
             });
         }
+        
     }
     
     public void setListener(DiaListener listener) {

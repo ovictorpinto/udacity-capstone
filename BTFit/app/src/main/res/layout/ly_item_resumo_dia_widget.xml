@@ -6,8 +6,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:paddingRight="2dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingRight="@dimen/espacamento_item_widget">
 
     <TextView
         android:id="@+id/textview_week"
@@ -28,16 +28,19 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/indicador_no_nivel_de_dieta"
             android:src="@drawable/ic_star_filled"/>
         <ImageView
             android:id="@+id/image_dieta_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/indicador_no_nivel_de_dieta"
             android:src="@drawable/ic_star_border"/>
         <ImageView
             android:id="@+id/image_dieta_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/indicador_no_nivel_de_dieta"
             android:src="@drawable/ic_star_border"/>
     </LinearLayout>
 
@@ -52,16 +55,19 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/indicador_do_nivel_de_atividade_fisica"
             android:src="@drawable/ic_star_filled"/>
         <ImageView
             android:id="@+id/image_atv_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/indicador_do_nivel_de_atividade_fisica"
             android:src="@drawable/ic_star_filled"/>
         <ImageView
             android:id="@+id/image_atv_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/indicador_do_nivel_de_atividade_fisica"
             android:src="@drawable/ic_star_border"/>
     </LinearLayout>
 

@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
  * Created by victorpinto on 04/05/17. 
  */
 
+@SuppressWarnings("WeakerAccess")
 public class DiaView {
     
     private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM", Locale.getDefault());

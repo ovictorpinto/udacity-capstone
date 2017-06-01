@@ -17,12 +17,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
-import java.text.DateFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +39,12 @@ import br.com.r29tecnologia.btpress.btfit.ui.MonthDialog;
 import br.com.r29tecnologia.btpress.btfit.util.DateUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
 
 public class MesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     
@@ -121,7 +131,9 @@ public class MesActivity extends AppCompatActivity implements LoaderManager.Load
         } else {
             acaoCompartilhar = new AsyncTask<String, String, Boolean>() {
                 
+                private Retorno retorno;
                 private ProgressDialog waiting;
+                private String corpo;
                 
                 @Override
                 protected void onPreExecute() {
@@ -138,24 +150,24 @@ public class MesActivity extends AppCompatActivity implements LoaderManager.Load
                 
                 @Override
                 protected Boolean doInBackground(String... params) {
+                    Retrofit retrofit = new Retrofit.Builder().addConverterFactory(JacksonConverterFactory.create())
+                                                              .baseUrl("http://r29tecnologia.com.br/btfitservice/").build();
+                    
+                    ShareService service = retrofit.create(ShareService.class);
                     try {
-                        Thread.sleep(1500);
-                        StringBuilder builder = new StringBuilder();
-                        DateFormat dataFormat = DateFormat.getDateInstance();
-                        for (Dia dia : diaList) {
-                            builder.append(getString(R.string.share_dia, dataFormat.format(dia.getDate()), dia.getFlagDieta(), dia
-                                    .getFlagAtvFisica(), dia.getObservacao())).append("\n\n");
+                        Call<Retorno> call = service.getEmailContent(diaList);
+                        Response<Retorno> response = call.execute();
+                        if (!response.isSuccessful()) {
+                            Log.d(TAG, response.message());
+                            return false;
                         }
-                        String texto = builder.toString();
-                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, texto);
-                        shareIntent.setType("text/plain");
-                        startActivity(shareIntent);
+                        retorno = response.body();
                         
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        return true;
+                    } catch (Exception e) {
+                        Log.e(TAG, "Erro ao gerar o corpo", e);
                     }
-                    return true;
+                    return false;
                 }
                 
                 @Override
@@ -164,6 +176,21 @@ public class MesActivity extends AppCompatActivity implements LoaderManager.Load
                     if (!isCancelled()) {
                         if (waiting.isShowing()) {
                             waiting.dismiss();
+                        }
+                        if (sucesso) {
+                            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                            Spanned spanned = Html.fromHtml(retorno.corpo);
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, spanned);
+                            shareIntent.setType("message/rfc822");
+                            
+                            try {
+                                startActivity(shareIntent);
+                            } catch (Exception e) {
+                                Log.e(TAG, "Envio do email", e);
+                                Toast.makeText(MesActivity.this, R.string.email_client_fail, Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(MesActivity.this, R.string.share_fail, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -195,6 +222,24 @@ public class MesActivity extends AppCompatActivity implements LoaderManager.Load
         super.onDestroy();
         if (acaoCompartilhar != null) {
             acaoCompartilhar.cancel(true);
+        }
+    }
+    
+    public interface ShareService {
+        @POST("share/")
+        Call<Retorno> getEmailContent(@Body List<Dia> dias);
+    }
+    
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Retorno {
+        private String corpo;
+        
+        public String getCorpo() {
+            return corpo;
+        }
+        
+        public void setCorpo(String corpo) {
+            this.corpo = corpo;
         }
     }
 }

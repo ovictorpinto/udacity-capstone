@@ -16,7 +16,7 @@ import br.com.r29tecnologia.btpress.btfit.util.DateUtil;
  */
 
 public class Application extends android.app.Application {
-    public static final String TAG = Application.class.getSimpleName();
+    private static final String TAG = Application.class.getSimpleName();
     
     @Override
     public void onCreate() {
