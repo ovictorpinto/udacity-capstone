@@ -9,7 +9,7 @@ android {
         config {
             keyAlias 'btfit'
             keyPassword '123456'
-            storeFile file('btfit.jks')
+            storeFile file("../../btfit.jks")
             storePassword '123456'
         }
     }

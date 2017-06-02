@@ -27,4 +27,5 @@
     <string name="indicador_do_nivel_de_atividade_fisica">Indicador do nível de atividade física</string>
     <string name="share_fail">Não foi possível gerar o corpo do email</string>
     <string name="email_client_fail">Nenhum cliente de email instalado</string>
+    <string name="inserir_registro_em_uma_data">Inserir registro em uma data</string>
 </resources>
